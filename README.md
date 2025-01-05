@@ -31,37 +31,5 @@ A collaborative spreadsheet system inspired by Google Sheets, where multiple use
 
 ---
 
-## 📦 Project Guidelines
 
-- This is a **group project**. Each group submits **one copy**.
-- **Language:** No restriction, but using **Scala**, **Haskell**, or **Lisp** may earn bonus points.
-- **Functional Programming:** Bonus points for incorporating functional programming concepts.
 
----
-
-## 📤 Submission Requirements
-
-Submit the following to the **EECLASS** platform:
-
-1. **Source Code:**
-   - If multiple files exist, submit them as a `.zip`.
-   - Alternatively, provide a link to a GitHub repository.
-
-2. **Report (`.pdf` format):**
-   - The report can be written in **Chinese** or **English**.
-   - Must include:
-     - Code structure and explanation.
-     - Programming paradigms used.
-     - Design patterns used.
-     - Errors encountered and how they were solved.
-
----
-
-## 🎯 Bonus Criteria
-- Use of **Functional Programming** concepts.
-- Writing the project in **Scala**, **Haskell**, or **Lisp**.
-
----
-
-## 📧 Collaboration
-- Group project with one submission per group.
