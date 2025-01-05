@@ -2,25 +2,23 @@
 
 class Sheet:
     def __init__(self, name):
-        """初始化表單"""
+        """Initialize the sheet."""
         self.name = name
-        self.content = [
-            [0 for _ in range(3)] for _ in range(3)
-        ]  # 初始化為 3x3 空表格
-        self.access_rights = {}  # 用戶訪問權限 (key: username, value: 'ReadOnly' or 'Editable')
+        self.content = [[0 for _ in range(3)] for _ in range(3)]  # 3x3 empty grid initialized to 0
+        self.access_rights = {}  # Access rights (key: username, value: 'ReadOnly' or 'Editable')
 
     def change_value(self, row, col, value, user):
-        """更改表單的值 (需檢查權限)"""
+        """Change a value in the sheet (requires appropriate permissions)."""
         if self.access_rights.get(user, 'ReadOnly') == 'Editable':
-            if 0 <= row < 3 and 0 <= col < 3:
+            if 0 <= row < len(self.content) and 0 <= col < len(self.content[0]):
                 self.content[row][col] = self._evaluate_expression(value)
             else:
-                raise ValueError("Row or column out of bounds")
+                raise ValueError("Row or column index out of bounds.")
         else:
-            raise PermissionError("This sheet is not editable by this user")
+            raise PermissionError("This sheet is not editable by the user.")
 
     def share_with_user(self, username, access_type):
-        """分享表單給其他用戶並設置權限"""
+        """Share the sheet with another user, setting their access rights."""
         if access_type in ['ReadOnly', 'Editable']:
             self.access_rights[username] = access_type
         else:
@@ -28,31 +26,34 @@ class Sheet:
 
     @staticmethod
     def _evaluate_expression(expr):
-        """計算簡單的數學表達式 (加減乘除)"""
+        """Evaluate a basic mathematical expression (e.g., addition, subtraction)."""
         try:
             return eval(expr, {"__builtins__": None}, {})
         except Exception:
-            raise ValueError("Invalid expression")
+            raise ValueError("Invalid mathematical expression.")
 
     def __repr__(self):
-        """顯示表單內容"""
+        """Display the sheet content."""
         return '\n'.join([', '.join(map(str, row)) for row in self.content])
 
 
 class User:
     def __init__(self, name):
-        """初始化用戶"""
+        """Initialize the user."""
         self.name = name
-        self.sheets = []  # 該用戶創建的表單列表
-        self.shared_sheets = []  # 該用戶可訪問的共享表單
+        self.sheets = []  # Sheets created by the user
+        self.shared_sheets = []  # Sheets shared with the user
 
     def create_sheet(self, sheet_name):
-        """創建新表單"""
+        """Create a new sheet."""
+        if any(sheet.name == sheet_name for sheet in self.sheets):
+            raise ValueError(f"Sheet with the name '{sheet_name}' already exists!")
+        
         sheet = Sheet(sheet_name)
-        sheet.access_rights[self.name] = 'Editable'  # 預設擁有編輯權限
+        sheet.access_rights[self.name] = 'Editable'  # Default to editable for the owner
         self.sheets.append(sheet)
         return sheet
 
     def __repr__(self):
-        """顯示用戶信息"""
+        """Display user information."""
         return f"User(name={self.name}, sheets={[sheet.name for sheet in self.sheets]})"
